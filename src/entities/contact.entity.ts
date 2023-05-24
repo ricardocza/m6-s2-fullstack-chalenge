@@ -3,8 +3,11 @@ import {
     CreateDateColumn, 
     DeleteDateColumn, 
     Entity, 
+    JoinColumn, 
+    ManyToOne, 
     PrimaryGeneratedColumn, 
     UpdateDateColumn } from "typeorm";
+import { Client } from "./client.entity";
 
 @Entity("contacts")
 class Contact {
@@ -18,7 +21,7 @@ class Contact {
     email: string
 
     @Column({type: "varchar", length: 11})
-    telefone: string
+    phone: string
 
     @CreateDateColumn({type: "date"})
     createdAt: string
@@ -28,6 +31,10 @@ class Contact {
     
     @DeleteDateColumn({type: "date"})
     deletedAt: string
+
+    @ManyToOne(() => Client)
+    @JoinColumn()
+    client: Client
 }
 
 export {Contact}

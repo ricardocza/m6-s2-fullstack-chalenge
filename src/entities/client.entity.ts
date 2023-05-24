@@ -12,7 +12,7 @@ class Client {
     email: string
 
     @Column({type: "varchar", length: 11})
-    telefone: string
+    phone: string
 
     @CreateDateColumn({type: "date"})
     createdAt: string

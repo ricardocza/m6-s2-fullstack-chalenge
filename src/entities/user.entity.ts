@@ -23,7 +23,7 @@ class User {
     @Column({type: "varchar", length: 100, unique: true})
     email: string
 
-    @Column({type: "varchar", length: 50})
+    @Column({type: "varchar", length: 150})
     password: string
 
     @CreateDateColumn({type: "date"})
