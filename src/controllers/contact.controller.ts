@@ -3,7 +3,7 @@ import { ICreateContactResponse } from "../interfaces/contact.interfaces";
 import { createContactService } from "../services/contact.services";
 
 const createContactController = async (req: Request, res: Response): Promise<Response> => {
-    const createContact: ICreateContactResponse = await createContactService(req.body)
+    const createContact: ICreateContactResponse = await createContactService(req.body, req.params.id)
 
     return res.status(201).json(createContact)
 }

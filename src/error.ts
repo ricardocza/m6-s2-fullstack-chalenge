@@ -15,7 +15,11 @@ const handleErrors = (err: any, req: Request, res: Response, _:NextFunction) => 
         return res.status(err.statusCode).json({message: err.message})
     }
 
-    if (err instanceof ZodError) {
+    if (err instanceof ZodError) {          
+        if (err.flatten().formErrors.length > 0) {
+            return res.status(400).json({message: err.flatten().formErrors[0]})
+        }
+        
         return res.status(400).json({message: err.flatten().fieldErrors})
     }
 
