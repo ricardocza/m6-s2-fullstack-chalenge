@@ -6,6 +6,7 @@ import { createContactSchemaResponse } from "../shcemas/contact.schemas";
 import { Client } from "../entities/client.entity";
 
 const createContactService = async (data: ICreateContact, clientId: string): Promise<ICreateContactResponse> => {
+    
     const contactRepository: Repository<Contact> = AppDataSource.getRepository(Contact)
     const clientRepository: Repository<Client> = AppDataSource.getRepository(Client)
     
@@ -17,4 +18,9 @@ const createContactService = async (data: ICreateContact, clientId: string): Pro
     return createContactSchemaResponse.parse(savedContact)
 }
 
-export {createContactService}
+const listContactService = async (): Promise<ICreateContactResponse[]> => {
+    const contactRepository: Repository<Contact> = AppDataSource.getRepository(Contact)
+    return await contactRepository.find()
+}
+
+export {createContactService, listContactService}

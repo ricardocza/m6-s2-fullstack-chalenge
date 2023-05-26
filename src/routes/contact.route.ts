@@ -6,16 +6,17 @@ import { Contact } from "../entities/contact.entity";
 import { createContactController, listContactController } from "../controllers/contact.controller";
 import validateIdMiddleware from "../middlewares/validateId.middleware";
 import { Client } from "../entities/client.entity";
-import validateIdAlreadyRegistered from "../middlewares/validateIdAlreadyRegistered.middleware";
+import validateTokenMiddleware from "../middlewares/validateToken.middleware";
+import validateContact from "../middlewares/validateContact.middleware";
 
 const contactRoute = Router()
 
 contactRoute.post(
     "/:id", 
+    validateTokenMiddleware,
     validateBody(createContactSchema), 
     validateEmailMiddleware(Contact), 
-    validateIdMiddleware(Client),
-    validateIdAlreadyRegistered,
+    validateIdMiddleware(Client),    
     createContactController
     )
 contactRoute.get("", listContactController)

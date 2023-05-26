@@ -7,8 +7,8 @@ import { Client } from "../entities/client.entity";
 import { Contact } from "../entities/contact.entity";
 
 
-const validateIdAlreadyRegistered = async (req:Request, res: Response, next: NextFunction): Promise<void> => {
-    const currentId: string = uuidSchema.parse(req.params.id)   
+const validateClientAlreadyRegistered = async (req:Request, res: Response, next: NextFunction): Promise<void> => {
+    const currentId: string = uuidSchema.parse(res.locals.id)   
      
     const contactRepository: Repository<Contact> = AppDataSource.getRepository(Contact)
     const clientRepository: Repository<Client> = AppDataSource.getRepository(Client)
@@ -24,4 +24,4 @@ const validateIdAlreadyRegistered = async (req:Request, res: Response, next: Nex
 }
 
 
-export default validateIdAlreadyRegistered
+export default validateClientAlreadyRegistered

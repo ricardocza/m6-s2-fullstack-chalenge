@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createContactSchemaResponse } from "./contact.schemas";
 
 const createClientSchema = z.object({
     name: z.string().max(50),
@@ -8,12 +9,18 @@ const createClientSchema = z.object({
 })
 
 const createClientSchemaResponse = createClientSchema.extend({
+    id: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
-    deletedAt: z.string().nullable()
+    deletedAt: z.string().nullable(),
+    contact: z.array(z.object({name: z.string(), email: z.string()})).nullish()
 })
+
+
+const listClientSchemaResponse = z.array(createClientSchemaResponse)
 
 export {
     createClientSchema,
-    createClientSchemaResponse
+    createClientSchemaResponse,
+    listClientSchemaResponse
 }
