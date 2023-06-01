@@ -10,11 +10,18 @@ const createUserSchema = z.object({
 const createUserSchemaResponse = createUserSchema.extend({
     id: z.string(),
     createdAt: z.string(),
-    updatedAt: z.string(),
-    deletedAt: z.string().nullable(),
+    updatedAt: z.string(),    
 }).omit({password: true})
+
+const listUsersSchema = z.array(createUserSchemaResponse)
+
+const updateUserSchema = createUserSchema.partial().refine(
+    (data) => Object.keys(data).length > 0,
+    {message: `At least one field is required: firstName, lastName, email`})
 
 export {
     createUserSchema,
-    createUserSchemaResponse
+    createUserSchemaResponse,
+    listUsersSchema,
+    updateUserSchema
 }

@@ -30,7 +30,7 @@ const loginService = async (data: ILogin): Promise<string> => {
             subject: String(user.id)
         }
     )
-        
+    
     return token
 }
 

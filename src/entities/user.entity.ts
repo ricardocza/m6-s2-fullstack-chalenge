@@ -32,9 +32,6 @@ class User {
     @UpdateDateColumn({type: "date"})
     updatedAt: string
 
-    @DeleteDateColumn({type: "date"})
-    deletedAt: string
-
     @BeforeInsert()
     @BeforeUpdate()
     hash(): void {

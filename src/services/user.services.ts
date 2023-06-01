@@ -1,8 +1,9 @@
-import { Repository } from "typeorm";
-import { ICreateUser, ICreateUserResponse } from "../interfaces/user.interfaces";
+import { DeleteResult, Repository } from "typeorm";
+import { ICreateUser, ICreateUserResponse, IListUserResponse, IUpdateUser } from "../interfaces/user.interfaces";
 import { User } from "../entities/user.entity";
 import { AppDataSource } from "../data-source";
-import { createUserSchemaResponse } from "../shcemas/users.schemas";
+import { createUserSchemaResponse, listUsersSchema } from "../shcemas/users.schemas";
+import { AppError } from "../error";
 
 const createUserService = async (userData: ICreateUser): Promise<ICreateUserResponse> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
@@ -12,4 +13,31 @@ const createUserService = async (userData: ICreateUser): Promise<ICreateUserResp
     return createUserSchemaResponse.parse(savedUser)
 }
 
-export {createUserService}
+const listUserService = async (): Promise<IListUserResponse> => {
+    const userRepository: Repository<User> = AppDataSource.getRepository(User)
+    const userInstance: User[] | undefined = await userRepository.find()
+
+    return listUsersSchema.parse(userInstance)
+}
+
+const deleteUserService = async (userId: string): Promise<void> => {
+    const userRepository: Repository<User> = AppDataSource.getRepository(User)
+    const userInstance: User | null = await userRepository.findOneBy({id: userId})
+    await userRepository.remove(userInstance!)    
+}
+
+const updateUserService = async (userData: ICreateUser, userId: string): Promise<ICreateUserResponse> => {
+    const userRepository: Repository<User> = AppDataSource.getRepository(User)
+    const oldInstance: User | null = await userRepository.findOneBy({id: userId})
+    const updatedUser: User = userRepository.create({...oldInstance, ...userData})
+    await userRepository.save(updatedUser);
+    
+    return createUserSchemaResponse.parse(updatedUser)
+}
+
+export {
+    createUserService, 
+    listUserService, 
+    deleteUserService, 
+    updateUserService    
+}

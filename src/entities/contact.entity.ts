@@ -29,10 +29,7 @@ class Contact {
     @UpdateDateColumn({type: "date"})
     updatedAt: string
     
-    @DeleteDateColumn({type: "date"})
-    deletedAt: string
-
-    @ManyToOne(() => Client)
+    @ManyToOne(() => Client, {onDelete: "CASCADE"})
     @JoinColumn()
     client: Client
 }

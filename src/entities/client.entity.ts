@@ -1,5 +1,16 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { 
+    Column, 
+    CreateDateColumn, 
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany, 
+    PrimaryGeneratedColumn, 
+    UpdateDateColumn 
+} from "typeorm";
+
 import { Contact } from "./contact.entity";
+import { User } from "./user.entity";
 
 @Entity("clients")
 class Client {
@@ -21,11 +32,12 @@ class Client {
     @UpdateDateColumn({type: "date"})
     updatedAt: string
     
-    @DeleteDateColumn({type: "date"})
-    deletedAt: string
-
     @OneToMany(() => Contact, (contact) => contact.client)
     contact: Contact[]
+
+    @ManyToOne(() => User, {onDelete: "CASCADE"})
+    @JoinColumn()
+    user: User
 }
 
 export {Client}

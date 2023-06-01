@@ -1,13 +1,12 @@
 import { Router } from "express";
 import validateBody from "../middlewares/validateBody.middleware";
-import { createContactSchema } from "../shcemas/contact.schemas";
+import { createContactSchema, updateContactSchema } from "../shcemas/contact.schemas";
 import validateEmailMiddleware from "../middlewares/validateEmail.middleware";
 import { Contact } from "../entities/contact.entity";
-import { createContactController, listContactController } from "../controllers/contact.controller";
-import validateIdMiddleware from "../middlewares/validateId.middleware";
-import { Client } from "../entities/client.entity";
+import { createContactController, deleteContactController, listAllContactsController, listContactController, updateContactController } from "../controllers/contact.controller";
 import validateTokenMiddleware from "../middlewares/validateToken.middleware";
-import validateContact from "../middlewares/validateContact.middleware";
+import validateClientBelongsToUserMiddleware from "../middlewares/validateClientBelongsToUser.middleware";
+import validateContactMiddleware from "../middlewares/validateContact.middleware";
 
 const contactRoute = Router()
 
@@ -16,9 +15,35 @@ contactRoute.post(
     validateTokenMiddleware,
     validateBody(createContactSchema), 
     validateEmailMiddleware(Contact), 
-    validateIdMiddleware(Client),    
+    validateClientBelongsToUserMiddleware,   
     createContactController
     )
-contactRoute.get("", listContactController)
+contactRoute.get(
+    "", 
+    validateTokenMiddleware, 
+    listAllContactsController
+)
+contactRoute.get(
+    "/:id/", 
+    validateTokenMiddleware, 
+    listContactController
+)
+
+contactRoute.patch(
+    "/:id/", 
+    validateTokenMiddleware,
+    validateBody(updateContactSchema),
+    validateContactMiddleware,
+    validateEmailMiddleware(Contact),
+    updateContactController
+)
+
+contactRoute.delete(
+    "/:id/",
+    validateTokenMiddleware,
+    validateContactMiddleware,
+    deleteContactController
+)
+
 
 export default contactRoute

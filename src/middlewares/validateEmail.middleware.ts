@@ -7,8 +7,8 @@ const validateEmailMiddleware = (entity: EntityTarget<any>) => async (req: Reque
     const currentEmail: string = req.body.email
     const repository: Repository<any> = AppDataSource.getRepository(entity)
     const findEmail = await repository.findOneBy({email: currentEmail})
-
-    if (findEmail) {
+    
+    if (findEmail && currentEmail) {
         throw new AppError("Email already in use", 400)
     }
     

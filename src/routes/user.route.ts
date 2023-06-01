@@ -1,14 +1,36 @@
 import { Router } from "express";
-import { createUserController, readUserController } from "../controllers/user.controler";
+import { createUserController, deleteUserController, readUserController, updateUserController } from "../controllers/user.controler";
 import validateBody from "../middlewares/validateBody.middleware";
-import { createUserSchema } from "../shcemas/users.schemas";
+import { createUserSchema, updateUserSchema } from "../shcemas/users.schemas";
 import validateEmailMiddleware from "../middlewares/validateEmail.middleware";
 import { User } from "../entities/user.entity";
+import validateTokenMiddleware from "../middlewares/validateToken.middleware";
 
 const userRoute = Router()
 
-userRoute.get("", readUserController)
-userRoute.post("", validateBody(createUserSchema), validateEmailMiddleware(User), createUserController)
+userRoute.get("", validateTokenMiddleware, readUserController)
+
+userRoute.post(
+    "", 
+    validateBody(createUserSchema), 
+    validateEmailMiddleware(User), 
+    createUserController
+)
+
+userRoute.delete(
+    "", 
+    validateTokenMiddleware, 
+    deleteUserController
+)
+
+userRoute.patch(
+    "", 
+    validateTokenMiddleware, 
+    validateBody(updateUserSchema), 
+    validateEmailMiddleware(User), 
+    updateUserController
+)
+
 
 
 export default userRoute
