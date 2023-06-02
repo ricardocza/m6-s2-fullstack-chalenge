@@ -13,9 +13,10 @@ const createClientSchemaResponse = createClientSchema.extend({
     updatedAt: z.string(),    
     contact: z.array(
         z.object({
+            id: z.string(),
             name: z.string(),
             email: z.string(),
-            phone: z.string()
+            phone: z.string(),
         })).nullish()
 })
 
