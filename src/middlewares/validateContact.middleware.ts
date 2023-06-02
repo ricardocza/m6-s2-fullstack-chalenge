@@ -13,8 +13,6 @@ const validateContactMiddleware = async (req:Request, res: Response, next: NextF
     const contactId: string = uuidSchema.parse(req.params.id)
     
     const contactRepository: Repository<Contact> = AppDataSource.getRepository(Contact)
-    const clientRepository: Repository<Client> = AppDataSource.getRepository(Client)
-    const userRepository: Repository<User> = AppDataSource.getRepository(User)
 
     const contactInstance: Contact[] = await contactRepository.find({relations: {client: true}, where: {id: contactId}})  
     
@@ -24,11 +22,12 @@ const validateContactMiddleware = async (req:Request, res: Response, next: NextF
 
     const clientId: string = contactInstance[0].client.id
 
-    const clientInstance: Client | null = await clientRepository.findOneBy({id: clientId, user: {id: userId}})
+    const userContactInstance: Contact | null = await contactRepository.findOneBy({id: contactId, user: {id: userId}})
     
-    if (!clientInstance) {
+    if (!userContactInstance) {
         throw new AppError("This contact doesn't belong to you", 401)
     }
+    
     
     return next()
 }

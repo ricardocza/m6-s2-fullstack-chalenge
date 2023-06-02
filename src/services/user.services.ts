@@ -13,7 +13,13 @@ const createUserService = async (userData: ICreateUser): Promise<ICreateUserResp
     return createUserSchemaResponse.parse(savedUser)
 }
 
-const listUserService = async (): Promise<IListUserResponse> => {
+const listUserService = async (userId: string): Promise<ICreateUserResponse> => {
+    const userRepository: Repository<User> = AppDataSource.getRepository(User)
+    const userInstance: User | null = await userRepository.findOneBy({id: userId})
+
+    return createUserSchemaResponse.parse(userInstance)
+}
+const listAllUsersService = async (): Promise<IListUserResponse> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
     const userInstance: User[] | undefined = await userRepository.find()
 
@@ -37,7 +43,8 @@ const updateUserService = async (userData: ICreateUser, userId: string): Promise
 
 export {
     createUserService, 
-    listUserService, 
+    listUserService,
+    listAllUsersService, 
     deleteUserService, 
     updateUserService    
 }

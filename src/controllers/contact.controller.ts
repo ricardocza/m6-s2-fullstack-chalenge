@@ -3,18 +3,18 @@ import { ICreateContactResponse, IListAllContactsResponse, IListContactResponse 
 import { createContactService, deleteContactService, listAllContactsService, listContactService, updateContactService } from "../services/contact.services";
 
 const createContactController = async (req: Request, res: Response): Promise<Response> => {
-    const createContact: ICreateContactResponse = await createContactService(req.body, req.params.id)
+    const createContact: ICreateContactResponse = await createContactService(req.body, req.params.id, res.locals.id)
 
     return res.status(201).json(createContact)
 }
 
 const listContactController = async (req: Request, res: Response): Promise<Response> => {
-    const listContact: IListContactResponse = await listContactService(req.params.id)
+    const listContact: IListContactResponse = await listContactService(req.params.id, res.locals.id)
     return res.status(200).json(listContact)
 }
 
 const listAllContactsController = async (req: Request, res: Response): Promise<Response> => {
-    const listContact: IListAllContactsResponse = await listAllContactsService()
+    const listContact: IListAllContactsResponse = await listAllContactsService(res.locals.id)
     return res.status(200).json(listContact)
 }
 

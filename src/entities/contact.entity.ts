@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn, 
     UpdateDateColumn } from "typeorm";
 import { Client } from "./client.entity";
+import { User } from "./user.entity";
 
 @Entity("contacts")
 class Contact {
@@ -32,6 +33,11 @@ class Contact {
     @ManyToOne(() => Client, {onDelete: "CASCADE"})
     @JoinColumn()
     client: Client
+    
+    @ManyToOne(() => User, {onDelete: "CASCADE"})
+    @JoinColumn()
+    user: User
+
 }
 
 export {Contact}

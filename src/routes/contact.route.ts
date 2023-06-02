@@ -25,7 +25,8 @@ contactRoute.get(
 )
 contactRoute.get(
     "/:id/", 
-    validateTokenMiddleware, 
+    validateTokenMiddleware,
+    validateContactMiddleware, 
     listContactController
 )
 

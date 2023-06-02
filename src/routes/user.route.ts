@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUserController, deleteUserController, readUserController, updateUserController } from "../controllers/user.controler";
+import { createUserController, deleteUserController, readAllUsersController, readUserController, updateUserController } from "../controllers/user.controler";
 import validateBody from "../middlewares/validateBody.middleware";
 import { createUserSchema, updateUserSchema } from "../shcemas/users.schemas";
 import validateEmailMiddleware from "../middlewares/validateEmail.middleware";
@@ -8,7 +8,8 @@ import validateTokenMiddleware from "../middlewares/validateToken.middleware";
 
 const userRoute = Router()
 
-userRoute.get("", validateTokenMiddleware, readUserController)
+userRoute.get("", validateTokenMiddleware, readAllUsersController)
+userRoute.get("/profile/", validateTokenMiddleware, readUserController)
 
 userRoute.post(
     "", 
