@@ -27,7 +27,7 @@ const readAllUsersController = async (req: Request, res: Response): Promise<Resp
 
 const updateUserController = async (req:Request, res: Response): Promise<Response> => {
     const userUpdated: ICreateUserResponse = await updateUserService(req.body, res.locals.id)
-    return res.status(201).json(userUpdated)
+    return res.status(200).json(userUpdated)
 }
 
 const deleteUserController = async (req:Request, res: Response): Promise<Response> => {
