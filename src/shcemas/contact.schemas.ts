@@ -3,10 +3,9 @@ import { createClientSchema } from "./client.schemas"
 import { createUserSchema } from "./users.schemas"
 
 const createContactSchema = z.object({
-    name: z.string().max(50),
-    email: z.string().max(100),
+    name: z.string().max(50).min(3),
+    email: z.string().max(100).email(),
     phone: z.string().length(11),
-    
 })
 
 const createContactSchemaResponse = createContactSchema.extend({

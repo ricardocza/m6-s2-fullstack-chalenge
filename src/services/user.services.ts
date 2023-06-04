@@ -4,6 +4,7 @@ import { User } from "../entities/user.entity";
 import { AppDataSource } from "../data-source";
 import { createUserSchemaResponse, listUsersSchema } from "../shcemas/users.schemas";
 import { AppError } from "../error";
+import { hashSync } from "bcryptjs";
 
 const createUserService = async (userData: ICreateUser): Promise<ICreateUserResponse> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
@@ -34,11 +35,15 @@ const deleteUserService = async (userId: string): Promise<void> => {
 
 const updateUserService = async (userData: ICreateUser, userId: string): Promise<ICreateUserResponse> => {
     const userRepository: Repository<User> = AppDataSource.getRepository(User)
-    const oldInstance: User | null = await userRepository.findOneBy({id: userId})
-    const updatedUser: User = userRepository.create({...oldInstance, ...userData})
-    await userRepository.save(updatedUser);
     
-    return createUserSchemaResponse.parse(updatedUser)
+    if (userData.password) {
+        userData.password = hashSync(userData.password, 9);
+    }
+    
+    const updateUser = await userRepository.update(userId, userData)
+    const newInstance: User | null = await userRepository.findOneBy({id: userId})
+    
+    return createUserSchemaResponse.parse(newInstance)
 }
 
 export {

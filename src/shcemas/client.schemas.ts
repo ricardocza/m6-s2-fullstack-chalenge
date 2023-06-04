@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const createClientSchema = z.object({
-    name: z.string().max(50),
-    email: z.string().max(100),
+    name: z.string().max(50).min(3),
+    email: z.string().max(100).email(),
     phone: z.string().length(11),
     
 })
@@ -13,9 +13,10 @@ const createClientSchemaResponse = createClientSchema.extend({
     updatedAt: z.string(),    
     contact: z.array(
         z.object({
+            id: z.string(),
             name: z.string(),
             email: z.string(),
-            phone: z.string()
+            phone: z.string(),
         })).nullish()
 })
 
