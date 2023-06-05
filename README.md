@@ -25,7 +25,15 @@ NODE_ENV=dev
 Where "user" and "pass" should be your username and your password.<br>
 Leave the PORT as 4000, as the front end is making requests to this port, if you change this, you will need to access `src\services\api.ts` inside your front end project folder, and change the port there accordingly.
 
-5) Now you are ready to launch the application, do it by running the following command:
+5) Before lauching the project, you need to make the migrations to create the tables in database, do it with the following commands:
+```console
+npm run typeorm migration:generate ./src/migrations/InitialMigration -- -d ./src/data-source.ts
+```
+```console
+npm run typeorm migration:run -- -d ./src/data-source
+```
+
+6) Now you are ready to launch the application, do it by running the following command:
 ```console
 npm run dev
 ```
